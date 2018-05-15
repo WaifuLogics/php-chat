@@ -90,10 +90,11 @@ abstract class AbstractMultiRoomServer implements MessageComponentInterface
     /**
      * @param ConnectedClientInterface $from
      * @param string $message
+     * @param string $roomId
      * @param int $timestamp
      * @return string
      */
-    abstract protected function logMessageReceived(ConnectedClientInterface $from, $message, $timestamp);
+    abstract protected function logMessageReceived(ConnectedClientInterface $from, $roomId, $message, $timestamp);
 
     /**
      * @param ConnectionInterface $conn
