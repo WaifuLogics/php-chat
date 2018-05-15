@@ -6,7 +6,7 @@ function displayChatMessage(from, message) {
 
     if (from) {
         var nameNode = document.createElement("STRONG");
-        var nameTextNode = document.createTextNode(from);
+        var nameTextNode = document.createTextNode(from + ": ");
         nameNode.appendChild(nameTextNode);
         node.appendChild(nameNode);
     }
@@ -34,6 +34,7 @@ function displayUserTypingMessage(from) {
 function removeUserTypingMessage(from) {
     var nodeId = 'userTyping' + from.name.replace(' ', '');
     var node = document.getElementById(nodeId);
+    console.log(node);
     if (node) {
         node.parentNode.removeChild(node);
     }
@@ -88,15 +89,17 @@ function connectToChat() {
 }
 
 function sendChatMessage() {
-    var d = new Date();
-    var params = {
-        'message': document.getElementsByName("message")[0].value,
-        'action': 'message',
-        'timestamp': d.getTime()/1000
-    };
-    conn.send(JSON.stringify(params));
+    if(document.getElementsByName("message")[0].value.length > 1) {
+        var d = new Date();
+        var params = {
+            'message': document.getElementsByName("message")[0].value,
+            'action': 'message',
+            'timestamp': d.getTime() / 1000
+        };
+        conn.send(JSON.stringify(params));
 
-    document.getElementsByName("message")[0].value = '';
+        document.getElementsByName("message")[0].value = '';
+    }
     return false;
 }
 
@@ -107,8 +110,15 @@ function updateChatTyping() {
         params = {'action': 'start-typing'};
         conn.send(JSON.stringify(params));
     }
-    else if (document.getElementsByName("message")[0].value.length == 1) {
+    else if (document.getElementsByName("message")[0].value.length < 1) {
         params = {'action': 'stop-typing'};
         conn.send(JSON.stringify(params));
+    }
+}
+
+function checkEnter(e) {
+    let code = (e.keyCode ? e.keyCode : e.which);
+    if(code == 13) { //Enter keycode
+        return sendChatMessage();
     }
 }
