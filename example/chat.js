@@ -1,31 +1,32 @@
 // Change localhost to the name or ip address of the host running the chat server
-var chatUrl = 'ws://localhost:9911';
+let chatUrl = 'ws://localhost:9911';
 let isTyping = false;
 
 function displayChatMessage(from, message) {
-    var node = document.createElement("LI");
+    const node = document.createElement("LI");
 
     if (from) {
-        var nameNode = document.createElement("STRONG");
-        var nameTextNode = document.createTextNode(from + ": ");
+        const nameNode = document.createElement("STRONG");
+        const nameTextNode = document.createTextNode(from + ": ");
         nameNode.appendChild(nameTextNode);
         node.appendChild(nameNode);
     }
 
-    var messageTextNode = document.createTextNode(message);
-    node.appendChild(messageTextNode);
+    // var messageTextNode = document.createTextNode(message);
+    // node.appendChild(messageTextNode);
+    node.innerHTML += message;
 
     document.getElementById("messageList").appendChild(node);
 }
 
 function displayUserTypingMessage(from) {
-    var nodeId = 'userTyping'+from.name.replace(' ','');
-    var node = document.getElementById(nodeId);
+    const nodeId = 'userTyping'+from.name.replace(' ','');
+    let node = document.getElementById(nodeId);
     if (!node) {
         node = document.createElement("LI");
         node.id = nodeId;
 
-        var messageTextNode = document.createTextNode(from.name + ' is typing...');
+        const messageTextNode = document.createTextNode(from.name + ' is typing...');
         node.appendChild(messageTextNode);
 
         document.getElementById("messageList").appendChild(node);
@@ -33,15 +34,15 @@ function displayUserTypingMessage(from) {
 }
 
 function removeUserTypingMessage(from) {
-    var nodeId = 'userTyping' + from.name.replace(' ', '');
-    var node = document.getElementById(nodeId);
+    const nodeId = 'userTyping' + from.name.replace(' ', '');
+    const node = document.getElementById(nodeId);
     console.log(node);
     if (node) {
         node.parentNode.removeChild(node);
     }
 }
 
-var conn;
+let conn;
 
 function connectToChat() {
     conn = new WebSocket(chatUrl);
@@ -50,7 +51,7 @@ function connectToChat() {
         document.getElementById('connectFormDialog').style.display = 'none';
         document.getElementById('messageDialog').style.display = 'block';
 
-        var params = {
+        const params = {
             'roomId': document.getElementsByName("room.name")[0].value,
             'userName': document.getElementsByName("user.name")[0].value,
             'action': 'connect'
@@ -61,7 +62,7 @@ function connectToChat() {
 
     conn.onmessage = function(e) {
         console.log(e);
-        var data = JSON.parse(e.data);
+        const data = JSON.parse(e.data);
 
         if (data.hasOwnProperty('message') && data.hasOwnProperty('from')) {
             displayChatMessage(data.from.name, data.message);
@@ -91,8 +92,8 @@ function connectToChat() {
 
 function sendChatMessage() {
     if(document.getElementsByName("message")[0].value.length > 1) {
-        var d = new Date();
-        var params = {
+        const d = new Date();
+        const params = {
             'message': document.getElementsByName("message")[0].value,
             'action': 'message',
             'timestamp': d.getTime() / 1000
@@ -109,7 +110,7 @@ function sendChatMessage() {
 }
 
 function updateChatTyping() {
-    var params = {};
+    let params = {};
 
     if (document.getElementsByName("message")[0].value.length > 0 && !isTyping) {
         params = {'action': 'start-typing'};
@@ -139,14 +140,20 @@ function checkTypingStatus() {
             // isTyping = false;
             timerRunning = false;
             updateChatTyping();
-            console.log("hi");
         }, 10 * 1000);
     }
 }
 
 function checkEnter(e) {
+
+    let isShift;
+    if (window.event) {
+        isShift = !!window.event.shiftKey; // typecast to boolean
+    } else {
+        isShift = e.shiftKey;
+    }
     let code = (e.keyCode ? e.keyCode : e.which);
-    if(code == 13) { //Enter keycode
+    if(code == 13 && !isShift) { //Enter keycode
         return sendChatMessage();
     }
 }

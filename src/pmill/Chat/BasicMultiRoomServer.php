@@ -2,10 +2,21 @@
 namespace pmill\Chat;
 
 use pmill\Chat\Interfaces\ConnectedClientInterface;
+use pmill\Chat\parsedown\ParseDownExtension;
 use Ratchet\ConnectionInterface;
 
 class BasicMultiRoomServer extends AbstractMultiRoomServer
 {
+
+    private $parsedown;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->parsedown = new ParseDownExtension();
+        $this->parsedown->setSafeMode(true)
+                        ->setBreaksEnabled(true);
+    }
 
     protected function makeUserWelcomeMessage(ConnectedClientInterface $client, $timestamp)
     {
@@ -24,7 +35,7 @@ class BasicMultiRoomServer extends AbstractMultiRoomServer
 
     protected function makeMessageReceivedMessage(ConnectedClientInterface $from, $message, $timestamp)
     {
-        return $message;
+        return $this->parsedown->line($message);
     }
 
     protected function logMessageReceived(ConnectedClientInterface $from, $roomId, $message, $timestamp)
