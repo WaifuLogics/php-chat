@@ -17,6 +17,8 @@ function displayChatMessage(from, message) {
     node.innerHTML += message;
 
     document.getElementById("messageList").appendChild(node);
+    let list = document.getElementById("messageList");
+    list.scrollTop = list.scrollHeight;
 }
 
 function displayUserTypingMessage(from) {

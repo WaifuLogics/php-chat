@@ -18,4 +18,12 @@ class ParseDownExtension extends Parsedown
         $link['element']['attributes']['target'] = '_blank';
         return $link;
     }
+
+    protected function inlineImage($Excerpt) {
+        $image =  parent::inlineImage($Excerpt);
+
+        $image['element']['attributes']['style'] = "width: 500px;";
+
+        return $image;
+    }
 }
