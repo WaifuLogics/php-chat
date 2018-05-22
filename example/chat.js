@@ -55,7 +55,8 @@ function connectToChat() {
 
         const params = {
             'roomId': document.getElementsByName("room.name")[0].value,
-            'userName': document.getElementsByName("user.name")[0].value,
+            // 'userName': document.getElementsByName("user.name")[0].value,
+            'userName': 'test',
             'action': 'connect'
         };
         console.log(params);
