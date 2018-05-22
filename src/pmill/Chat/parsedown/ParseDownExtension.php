@@ -22,7 +22,7 @@ class ParseDownExtension extends Parsedown
     protected function inlineImage($Excerpt) {
         $image =  parent::inlineImage($Excerpt);
 
-        $image['element']['attributes']['style'] = "width: 500px;";
+        $image['element']['attributes']['style'] = "max-width: 500px;";
 
         return $image;
     }
