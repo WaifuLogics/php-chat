@@ -23,9 +23,8 @@ function displayChatMessage(from, message) {
     // node.appendChild(messageTextNode);
     node.innerHTML += message;
 
-    document.getElementById("messageList").appendChild(node);
-    let list = document.getElementById("messageList");
-    list.scrollTop = list.scrollHeight;
+    messageList.appendChild(node);
+    messageList.scrollTop = messageList.scrollHeight;
 }
 
 function displayUserTypingMessage(from) {
@@ -63,6 +62,7 @@ function loadMessages() {
             }
             document.getElementById('connectFormDialog').style.display = 'none';
             document.getElementById('messageDialog').style.display = 'block';
+            messageList.scrollTop = messageList.scrollHeight;
         }
     };
     ajax.send();
