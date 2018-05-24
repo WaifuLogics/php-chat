@@ -28,6 +28,6 @@ foreach ($smt->fetchAll(PDO::FETCH_ASSOC) as $message) {
 
 die(
     json_encode([
-        'messages' => $smt->fetchAll(PDO::FETCH_ASSOC)
+        'messages' => $messages
     ])
 );
