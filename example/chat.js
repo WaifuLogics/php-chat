@@ -74,6 +74,10 @@ function connectToChat() {
 
     conn.onopen = function() {
         let username = document.getElementsByName("user.name")[0].value;
+        if(username.length < 5) {
+            alert("Username must be at least 5 characters.");
+            return false;
+        }
         document.getElementById('connectFormDialog').innerHTML = "Connecting<br />";
         const params = {
             // 'roomId': document.getElementsByName("room.name")[0].value,
