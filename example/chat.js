@@ -1,5 +1,5 @@
 // Change localhost to the name or ip address of the host running the chat server
-let chatUrl = 'ws://localhost:9911';
+//let chatUrl = 'ws://localhost:9911';
 let isTyping = false;
 
 function displayChatMessage(from, message) {
