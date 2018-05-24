@@ -1,6 +1,13 @@
 // Change localhost to the name or ip address of the host running the chat server
 //let chatUrl = 'ws://localhost:9911';
 let isTyping = false;
+let messageField;
+let messageList;
+
+document.addEventListener("DOMContentLoaded", () => {
+    messageField = document.getElementsByName("message")[0];
+    messageList = document.getElementById("messageList");
+});
 
 function displayChatMessage(from, message) {
     const node = document.createElement("LI");
@@ -31,7 +38,7 @@ function displayUserTypingMessage(from) {
         const messageTextNode = document.createTextNode(from.name + ' is typing...');
         node.appendChild(messageTextNode);
 
-        document.getElementById("messageList").appendChild(node);
+        messageList.appendChild(node);
     }
 }
 
@@ -44,19 +51,34 @@ function removeUserTypingMessage(from) {
     }
 }
 
-let conn;
+function loadMessages() {
 
+    const ajax = new XMLHttpRequest();
+    ajax.open("GET", `loadMessages.php?room=${room}`);
+    ajax.onreadystatechange = () => {
+        if(ajax.readyState == 4 && ajax.status == 200) {
+            let json = JSON.parse(ajax.responseText);
+            for(let message of json.messages) {
+                displayChatMessage(message.account_name, message.chat_message);
+            }
+            document.getElementById('connectFormDialog').style.display = 'none';
+            document.getElementById('messageDialog').style.display = 'block';
+        }
+    };
+    ajax.send();
+}
+
+let conn;
 function connectToChat() {
     conn = new WebSocket(chatUrl);
 
     conn.onopen = function() {
-        document.getElementById('connectFormDialog').style.display = 'none';
-        document.getElementById('messageDialog').style.display = 'block';
-
+        let username = document.getElementsByName("user.name")[0].value;
+        document.getElementById('connectFormDialog').innerHTML = "Connecting<br />";
         const params = {
             // 'roomId': document.getElementsByName("room.name")[0].value,
-            'roomId': 'test',
-            'userName': document.getElementsByName("user.name")[0].value,
+            'roomId': room,
+            'userName': username,
             'action': 'connect'
         };
         console.log(params);
@@ -76,6 +98,7 @@ function connectToChat() {
         else if (data.hasOwnProperty('type')) {
             if (data.type == 'list-users' && data.hasOwnProperty('clients')) {
                 displayChatMessage(null, 'There are ' + data.clients.length + ' users connected');
+                loadMessages();
             }
             else if (data.type == 'user-started-typing') {
                 displayUserTypingMessage(data.from)
@@ -94,16 +117,16 @@ function connectToChat() {
 }
 
 function sendChatMessage() {
-    if(document.getElementsByName("message")[0].value.length > 1) {
+    if(messageField.value.length > 1) {
         const d = new Date();
         const params = {
-            'message': document.getElementsByName("message")[0].value,
+            'message': messageField.value,
             'action': 'message',
             'timestamp': d.getTime() / 1000
         };
         conn.send(JSON.stringify(params));
 
-        document.getElementsByName("message")[0].value = '';
+        messageField.value = '';
 
         isTyping = false;
         timerRunning = false;
@@ -115,13 +138,13 @@ function sendChatMessage() {
 function updateChatTyping() {
     let params = {};
 
-    if (document.getElementsByName("message")[0].value.length > 0 && !isTyping) {
+    if (messageField.value.length > 0 && !isTyping) {
         params = {'action': 'start-typing'};
         conn.send(JSON.stringify(params));
         isTyping = true;
         checkTypingStatus();
     }
-    else if (document.getElementsByName("message")[0].value.length < 1 || (isTyping && !timerRunning) ) {
+    else if (messageField.value.length < 1 || (isTyping && !timerRunning) ) {
         params = {'action': 'stop-typing'};
         conn.send(JSON.stringify(params));
         isTyping = false;

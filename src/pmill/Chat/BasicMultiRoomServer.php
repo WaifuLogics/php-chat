@@ -2,6 +2,7 @@
 namespace pmill\Chat;
 
 use PDO;
+use pmill\Chat\Database\DBDriver;
 use pmill\Chat\Interfaces\ConnectedClientInterface;
 use pmill\Chat\parsedown\ParseDownExtension;
 use Ratchet\ConnectionInterface;
@@ -18,8 +19,7 @@ class BasicMultiRoomServer extends AbstractMultiRoomServer
         $this->parsedown = new ParseDownExtension();
         $this->parsedown->setSafeMode(true)
                         ->setBreaksEnabled(true);
-        $this->database = new PDO("mysql:host=protask.duncte123.me;dbname=it_connection;",
-            'pro', '30Fos5L1Y');
+        $this->database = DBDriver::getDatabase();
     }
 
     protected function makeUserWelcomeMessage(ConnectedClientInterface $client, $timestamp)
