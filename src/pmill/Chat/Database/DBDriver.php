@@ -13,13 +13,8 @@ use PDO;
 
 class DBDriver
 {
-    private static $database;
 
     public static function getDatabase() {
-        if(self::$database == null) {
-            self::$database = new PDO("mysql:host=protask.duncte123.me;dbname=it_connection;",
-                'pro', '30Fos5L1Y');
-        }
         return new PDO("mysql:host=protask.duncte123.me;dbname=it_connection;",
             'pro', '30Fos5L1Y');
     }
