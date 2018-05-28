@@ -20,7 +20,8 @@ class DBDriver
             self::$database = new PDO("mysql:host=protask.duncte123.me;dbname=it_connection;",
                 'pro', '30Fos5L1Y');
         }
-        return self::$database;
+        return new PDO("mysql:host=protask.duncte123.me;dbname=it_connection;",
+            'pro', '30Fos5L1Y');
     }
 
 }
