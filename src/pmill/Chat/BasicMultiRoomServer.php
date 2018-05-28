@@ -45,7 +45,7 @@ class BasicMultiRoomServer extends AbstractMultiRoomServer
     protected function logMessageReceived(ConnectedClientInterface $from, $roomId, $message, $timestamp)
     {
         /** save messages to a database, etc... */
-        $smt = $this->database->prepare("
+        $smt = DBDriver::getDatabase()->prepare("
                                   INSERT INTO chat_room_messages(chat_room_id, account_name, chat_message, chat_date)
                                   VALUES (:chat_room_id , :account_name , :message , :chat_date )
                                   ");

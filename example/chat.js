@@ -73,11 +73,15 @@ function connectToChat() {
     conn = new WebSocket(chatUrl);
 
     conn.onopen = function() {
-        let username = document.getElementsByName("user.name")[0].value;
+        let username = user;
+        if(user == null)
+            username = document.getElementsByName("user.name")[0].value;
+
         if(username.length < 5) {
             alert("Username must be at least 5 characters.");
             return false;
         }
+        loadMessages();
         document.getElementById('connectFormDialog').innerHTML = "Connecting<br />";
         const params = {
             // 'roomId': document.getElementsByName("room.name")[0].value,
@@ -102,7 +106,6 @@ function connectToChat() {
         else if (data.hasOwnProperty('type')) {
             if (data.type == 'list-users' && data.hasOwnProperty('clients')) {
                 displayChatMessage(null, 'There are ' + data.clients.length + ' users connected');
-                loadMessages();
             }
             else if (data.type == 'user-started-typing') {
                 displayUserTypingMessage(data.from)
