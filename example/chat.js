@@ -74,7 +74,8 @@ function connectToChat() {
 
     conn.onopen = function() {
         let username = user;
-        if(user == null)
+        console.log(user);
+        if(user == null || user == "")
             username = document.getElementsByName("user.name")[0].value;
 
         if(username.length < 5) {
