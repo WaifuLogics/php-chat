@@ -52,7 +52,18 @@ function removeUserTypingMessage(from) {
 
 function loadMessages() {
 
-    const ajax = new XMLHttpRequest();
+    fetch(`loadMessages.php?room=${room}`)
+        .then(response => response.json())
+        .then(json => {
+            for(let message of json.messages) {
+                displayChatMessage(message.account_name, message.chat_message);
+            }
+            document.getElementById('connectFormDialog').style.display = 'none';
+            document.getElementById('messageDialog').style.display = 'block';
+            messageList.scrollTop = messageList.scrollHeight;
+        });
+
+    /*const ajax = new XMLHttpRequest();
     ajax.open("GET", `loadMessages.php?room=${room}`);
     ajax.onreadystatechange = () => {
         if(ajax.readyState == 4 && ajax.status == 200) {
@@ -65,7 +76,7 @@ function loadMessages() {
             messageList.scrollTop = messageList.scrollHeight;
         }
     };
-    ajax.send();
+    ajax.send();*/
 }
 
 let conn;
