@@ -13,7 +13,7 @@ function displayChatMessage(from, message) {
     const node = document.createElement("LI");
 
     if (from) {
-        const rowNode = document.createElement("DIV");
+        /*const rowNode = document.createElement("DIV");
         rowNode.className = "row";
 
         const messageNode = document.createElement("DIV");
@@ -39,7 +39,7 @@ function displayChatMessage(from, message) {
         `;
 
         rowNode.appendChild(messageNode);
-        node.appendChild(rowNode);
+        node.appendChild(rowNode);*/
 
         /*
         * <div class="row">
