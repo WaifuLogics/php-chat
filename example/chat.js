@@ -13,8 +13,60 @@ function displayChatMessage(from, message) {
     const node = document.createElement("LI");
 
     if (from) {
+        const rowNode = document.createElement("DIV");
+        rowNode.className = "row";
+
+        const messageNode = document.createElement("DIV");
+        messageNode.className += "col s6";
+
+        if (from == user) {
+            messageNode.className += " ownMessage offset-s6";
+        } else {
+            messageNode.className += " otherMessage";
+        }
+
+        messageNode.innerHTML = `
+        <div class="row">
+            <div class="col s2">
+                <img src="" alt="Avatar">
+            </div>
+            <div class="col s10">
+                <h5>${from}</h5>
+                <p>${message}</p>
+                <span>Timestamp</span>
+            </div>
+        </div>
+        `;
+
+        rowNode.appendChild(messageNode);
+        node.appendChild(rowNode);
+
+        /*
+        * <div class="row">
+            <!--if own message use right col, if not use left col-->
+            <div class="col s6 otherMessage"></div> //no offset
+            <div class="col s6 ownMessage offset-s6">
+              <div class="row">
+                <div class="col s2">
+                  <img src="" alt="Avatar">
+                </div>
+                <div class="col s10">
+                  <h5>Username</h5>
+                  <p>message</p>
+                  <span>Timestamp</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          */
+
         const nameNode = document.createElement("STRONG");
         const nameTextNode = document.createTextNode(from + ": ");
+
+        if (from == user) {
+            nameNode.className += " ownMessage";
+        }
+
         nameNode.appendChild(nameTextNode);
         node.appendChild(nameNode);
     }
@@ -28,7 +80,7 @@ function displayChatMessage(from, message) {
 }
 
 function displayUserTypingMessage(from) {
-    const nodeId = 'userTyping'+from.name.replace(' ','');
+    const nodeId = 'userTyping' + from.name.replace(' ', '');
     let node = document.getElementById(nodeId);
     if (!node) {
         node = document.createElement("LI");
@@ -55,41 +107,25 @@ function loadMessages() {
     fetch(`loadMessages.php?room=${room}`)
         .then(response => response.json())
         .then(json => {
-            for(let message of json.messages) {
+            for (let message of json.messages) {
                 displayChatMessage(message.account_name, message.chat_message);
             }
             document.getElementById('connectFormDialog').style.display = 'none';
             document.getElementById('messageDialog').style.display = 'block';
             messageList.scrollTop = messageList.scrollHeight;
         });
-
-    /*const ajax = new XMLHttpRequest();
-    ajax.open("GET", `loadMessages.php?room=${room}`);
-    ajax.onreadystatechange = () => {
-        if(ajax.readyState == 4 && ajax.status == 200) {
-            let json = JSON.parse(ajax.responseText);
-            for(let message of json.messages) {
-                displayChatMessage(message.account_name, message.chat_message);
-            }
-            document.getElementById('connectFormDialog').style.display = 'none';
-            document.getElementById('messageDialog').style.display = 'block';
-            messageList.scrollTop = messageList.scrollHeight;
-        }
-    };
-    ajax.send();*/
 }
 
 let conn;
+
 function connectToChat() {
     conn = new WebSocket(chatUrl);
 
-    conn.onopen = function() {
-        let username = user;
-        console.log(user);
-        if(user == null || user == "")
-            username = document.getElementsByName("user.name")[0].value;
+    conn.onopen = function () {
+        if (user == null || user == "")
+            user = document.getElementsByName("user.name")[0].value;
 
-        if(username.length < 5) {
+        if (user.length < 5) {
             alert("Username must be at least 5 characters.");
             return false;
         }
@@ -98,14 +134,14 @@ function connectToChat() {
         const params = {
             // 'roomId': document.getElementsByName("room.name")[0].value,
             'roomId': room,
-            'userName': username,
+            'userName': user,
             'action': 'connect'
         };
         console.log(params);
         conn.send(JSON.stringify(params));
     };
 
-    conn.onmessage = function(e) {
+    conn.onmessage = function (e) {
         console.log(e);
         const data = JSON.parse(e.data);
 
@@ -128,7 +164,7 @@ function connectToChat() {
         }
     };
 
-    conn.onerror = function(e) {
+    conn.onerror = function (e) {
         console.log(e);
     };
 
@@ -136,7 +172,7 @@ function connectToChat() {
 }
 
 function sendChatMessage() {
-    if(messageField.value.length > 1) {
+    if (messageField.value.length > 1) {
         const d = new Date();
         const params = {
             'message': messageField.value,
@@ -163,7 +199,7 @@ function updateChatTyping() {
         isTyping = true;
         checkTypingStatus();
     }
-    else if (messageField.value.length < 1 || (isTyping && !timerRunning) ) {
+    else if (messageField.value.length < 1 || (isTyping && !timerRunning)) {
         params = {'action': 'stop-typing'};
         conn.send(JSON.stringify(params));
         isTyping = false;
@@ -179,7 +215,7 @@ let timeout;
  * This function checks if we are already typing
  */
 function checkTypingStatus() {
-    if(!timerRunning) {
+    if (!timerRunning) {
         timerRunning = true;
         timeout = setTimeout(() => {
             // isTyping = false;
@@ -198,7 +234,7 @@ function checkEnter(e) {
         isShift = e.shiftKey;
     }
     let code = (e.keyCode ? e.keyCode : e.which);
-    if(code == 13 && !isShift) { //Enter keycode
+    if (code == 13 && !isShift) { //Enter keycode
         return sendChatMessage();
     }
 }
