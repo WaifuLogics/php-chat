@@ -104,7 +104,7 @@ function removeUserTypingMessage(from) {
 
 function loadMessages() {
 
-    fetch(`loadMessages.php?room=${room}`)
+    fetch(`http://chat.protask.duncte123.me/loadMessages.php?room=${room}`)
         .then(response => response.json())
         .then(json => {
             for (let message of json.messages) {
