@@ -13,7 +13,7 @@ function displayChatMessage(from, message) {
     const node = document.createElement("LI");
 
     if (from) {
-        /*const rowNode = document.createElement("DIV");
+        const rowNode = document.createElement("DIV");
         rowNode.className = "row";
 
         const messageNode = document.createElement("DIV");
@@ -39,10 +39,9 @@ function displayChatMessage(from, message) {
         `;
 
         rowNode.appendChild(messageNode);
-        node.appendChild(rowNode);*/
+        node.appendChild(rowNode);
 
-        /*
-        * <div class="row">
+        /* <div class="row">
             <!--if own message use right col, if not use left col-->
             <div class="col s6 otherMessage"></div> //no offset
             <div class="col s6 ownMessage offset-s6">
@@ -58,9 +57,8 @@ function displayChatMessage(from, message) {
               </div>
             </div>
           </div>
-          */
 
-        const nameNode = document.createElement("STRONG");
+        /*const nameNode = document.createElement("STRONG");
         const nameTextNode = document.createTextNode(from + ": ");
 
         if (from == user) {
@@ -68,7 +66,7 @@ function displayChatMessage(from, message) {
         }
 
         nameNode.appendChild(nameTextNode);
-        node.appendChild(nameNode);
+        node.appendChild(nameNode);*/
     }
 
     // var messageTextNode = document.createTextNode(message);
