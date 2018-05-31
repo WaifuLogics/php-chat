@@ -110,8 +110,8 @@ function loadMessages() {
             for (let message of json.messages) {
                 displayChatMessage(message.account_name, message.chat_message);
             }
-            document.getElementById('connectFormDialog').style.display = 'none';
-            document.getElementById('messageDialog').style.display = 'block';
+            //document.getElementById('connectFormDialog').style.display = 'none';
+            //document.getElementById('messageDialog').style.display = 'block';
             messageList.scrollTop = messageList.scrollHeight;
         });
 }
@@ -123,14 +123,15 @@ function connectToChat() {
 
     conn.onopen = function () {
         if (user == null || user == "")
-            user = document.getElementsByName("user.name")[0].value;
+            return false;
+            //user = document.getElementsByName("user.name")[0].value;
 
         if (user.length < 5) {
             alert("Username must be at least 5 characters.");
             return false;
         }
         loadMessages();
-        document.getElementById('connectFormDialog').innerHTML = "Connecting<br />";
+        //document.getElementById('connectFormDialog').innerHTML = "Connecting<br />";
         const params = {
             // 'roomId': document.getElementsByName("room.name")[0].value,
             'roomId': room,
