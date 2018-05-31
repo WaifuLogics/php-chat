@@ -17,7 +17,7 @@ function displayChatMessage(from, message) {
         rowNode.className = "row";
 
         const messageNode = document.createElement("DIV");
-        messageNode.className += "col s6";
+        messageNode.className += "col s5";
 
         if (from == user) {
             messageNode.className += " ownMessage offset-s6";
@@ -71,7 +71,7 @@ function displayChatMessage(from, message) {
 
     // var messageTextNode = document.createTextNode(message);
     // node.appendChild(messageTextNode);
-    node.innerHTML += message;
+    // node.innerHTML += message;
 
     messageList.appendChild(node);
     messageList.scrollTop = messageList.scrollHeight;
