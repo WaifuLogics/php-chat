@@ -33,13 +33,10 @@ function displayChatMessage(from, message, timestamp) {
             <div class="col s10">
                 <h5>${from}</h5>
                 <p>${message}</p>
-                <span>${new Date(timestamp)}</span>
+                <span>${new Date(+timestamp).toUTCString()}</span>
             </div>
         </div>
         `;
-
-        console.log(timestamp);
-        console.log(new Date(+timestamp));
 
         rowNode.appendChild(messageNode);
         node.appendChild(rowNode);
