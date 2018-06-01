@@ -176,7 +176,7 @@ function sendChatMessage() {
         const params = {
             'message': messageField.value,
             'action': 'message',
-            'timestamp': d.getTime() / 1000
+            'timestamp': d.getTime()
         };
         conn.send(JSON.stringify(params));
 
