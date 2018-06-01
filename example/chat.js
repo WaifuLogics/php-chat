@@ -38,6 +38,7 @@ function displayChatMessage(from, message, timestamp) {
         </div>
         `;
 
+        console.log(timestamp);
         console.log(new Date(timestamp));
 
         rowNode.appendChild(messageNode);
