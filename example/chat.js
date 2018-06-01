@@ -145,7 +145,7 @@ function connectToChat() {
         const data = JSON.parse(e.data);
 
         if (data.hasOwnProperty('message') && data.hasOwnProperty('from')) {
-            displayChatMessage(data.from.name, data.message);
+            displayChatMessage(data.from.name, data.message, new Date(data.timestamp));
         }
         else if (data.hasOwnProperty('message')) {
             displayChatMessage(null, data.message);
