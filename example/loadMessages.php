@@ -23,7 +23,8 @@ $parsedown->setSafeMode(true)
 foreach ($smt->fetchAll(PDO::FETCH_ASSOC) as $message) {
     $messages[] = [
         'account_name' => $message['account_name'],
-        'chat_message' => $parsedown->line($message['chat_message'])
+        'chat_message' => $parsedown->line($message['chat_message']),
+        'timestamp' => $message['chat_date']
     ];
 }
 
