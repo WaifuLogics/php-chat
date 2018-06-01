@@ -33,7 +33,7 @@ function displayChatMessage(from, message, timestamp) {
             <div class="col s10">
                 <h5>${from}</h5>
                 <p>${message}</p>
-                <span>${timestamp.toUTCString()}</span>
+                <span>${new Date(timestamp).toUTCString()}</span>
             </div>
         </div>
         `;
@@ -106,7 +106,7 @@ function loadMessages() {
         .then(response => response.json())
         .then(json => {
             for (let message of json.messages) {
-                displayChatMessage(message.account_name, message.chat_message, new Date(message.timestamp));
+                displayChatMessage(message.account_name, message.chat_message, message.timestamp);
             }
             //document.getElementById('connectFormDialog').style.display = 'none';
             //document.getElementById('messageDialog').style.display = 'block';
@@ -145,7 +145,7 @@ function connectToChat() {
         const data = JSON.parse(e.data);
 
         if (data.hasOwnProperty('message') && data.hasOwnProperty('from')) {
-            displayChatMessage(data.from.name, data.message, new Date(data.timestamp));
+            displayChatMessage(data.from.name, data.message, data.timestamp);
         }
         else if (data.hasOwnProperty('message')) {
             displayChatMessage(null, data.message);
