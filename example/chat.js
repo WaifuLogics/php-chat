@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     messageList = document.getElementById("messageList");
 });
 
-function displayChatMessage(from, message) {
+function displayChatMessage(from, message, timestamp) {
     const node = document.createElement("LI");
 
     if (from) {
@@ -33,7 +33,7 @@ function displayChatMessage(from, message) {
             <div class="col s10">
                 <h5>${from}</h5>
                 <p>${message}</p>
-                <span>Timestamp</span>
+                <span>${timestamp.toUTCString()}</span>
             </div>
         </div>
         `;
@@ -106,7 +106,7 @@ function loadMessages() {
         .then(response => response.json())
         .then(json => {
             for (let message of json.messages) {
-                displayChatMessage(message.account_name, message.chat_message);
+                displayChatMessage(message.account_name, message.chat_message, new Date(message.timestamp));
             }
             //document.getElementById('connectFormDialog').style.display = 'none';
             //document.getElementById('messageDialog').style.display = 'block';
