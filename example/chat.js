@@ -39,7 +39,7 @@ function displayChatMessage(from, message, timestamp) {
         `;
 
         console.log(timestamp);
-        console.log(new Date(Date.parse(timestamp)));
+        console.log(new Date(+timestamp));
 
         rowNode.appendChild(messageNode);
         node.appendChild(rowNode);
