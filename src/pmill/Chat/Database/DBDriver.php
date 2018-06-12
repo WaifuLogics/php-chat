@@ -15,7 +15,7 @@ class DBDriver
 {
 
     public static function getDatabase() {
-        return new PDO("mysql:host=protask.duncte123.me;dbname=it_connection;",
+        return new PDO("mysql:host=localhost;dbname=it_connection;",
             'pro', '30Fos5L1Y');
     }
 
