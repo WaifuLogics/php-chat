@@ -1,7 +1,6 @@
 <?php
 namespace pmill\Chat;
 
-use PDO;
 use pmill\Chat\Database\DBDriver;
 use pmill\Chat\Interfaces\ConnectedClientInterface;
 use pmill\Chat\parsedown\ParseDownExtension;
@@ -11,7 +10,6 @@ class BasicMultiRoomServer extends AbstractMultiRoomServer
 {
 
     private $parsedown;
-    private $database;
 
     public function __construct()
     {
@@ -19,7 +17,6 @@ class BasicMultiRoomServer extends AbstractMultiRoomServer
         $this->parsedown = new ParseDownExtension();
         $this->parsedown->setSafeMode(true)
                         ->setBreaksEnabled(true);
-        $this->database = DBDriver::getDatabase();
     }
 
     protected function makeUserWelcomeMessage(ConnectedClientInterface $client, $timestamp)
@@ -45,7 +42,8 @@ class BasicMultiRoomServer extends AbstractMultiRoomServer
     protected function logMessageReceived(ConnectedClientInterface $from, $roomId, $message, $timestamp)
     {
         /** save messages to a database, etc... */
-        $smt = DBDriver::getDatabase()->prepare("
+        $db = DBDriver::getDatabase();
+        $smt = $db->prepare("
                                   INSERT INTO chat_room_messages(chat_room_id, account_name, chat_message, chat_date)
                                   VALUES (:chat_room_id , :account_name , :message , :chat_date )
                                   ");
