@@ -47,6 +47,12 @@ class BasicMultiRoomServer extends AbstractMultiRoomServer
                                   INSERT INTO chat_room_messages(chat_room_id, account_name, chat_message, chat_date)
                                   VALUES (:chat_room_id , :account_name , :message , :chat_date )
                                   ");
+
+        if (!$smt) {
+            echo "\nPDO::errorInfo():\n";
+            print_r($db->errorInfo());
+        }
+
         $smt->execute([
             'chat_room_id' => $roomId,
             'account_name' => $from->getName(),
