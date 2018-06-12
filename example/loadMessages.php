@@ -6,7 +6,7 @@ require_once __DIR__ . "/../vendor/autoload.php";
 
 use pmill\Chat\parsedown\ParseDownExtension;
 
-$roomId = isset($_GET['room']) && !empty($_GET['room']) ? ((integer)$_GET['room']) : 0;
+$roomId = isset($_GET['room']) && !empty($_GET['room']) ? $_GET['room'] : 0;
 
 $db = \pmill\Chat\Database\DBDriver::getDatabase();
 
