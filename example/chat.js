@@ -28,7 +28,7 @@ function displayChatMessage(from, message, timestamp) {
         messageNode.innerHTML = `
         <div class="row">
             <div class="col s2">
-                <img src="" alt="Avatar">
+                <img class="activityAvatar" src="/img/users/test.png" alt="Avatar">
             </div>
             <div class="col s10">
                 <h5>${from}</h5>
