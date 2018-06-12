@@ -50,15 +50,18 @@ class BasicMultiRoomServer extends AbstractMultiRoomServer
 
         if (!$smt) {
             echo "\nPDO::errorInfo():\n";
-            print_r($db->errorInfo());
         }
 
-        $smt->execute([
+        $result = $smt->execute([
             'chat_room_id' => $roomId,
             'account_name' => $from->getName(),
             'message' => $message,
             'chat_date' => $timestamp
         ]);
+
+        echo $result . PHP_EOL;
+        print_r($db->errorInfo());
+        echo PHP_EOL;
     }
 
     protected function createClient(ConnectionInterface $conn, $name)
