@@ -42,11 +42,14 @@ class BasicMultiRoomServer extends AbstractMultiRoomServer
     protected function logMessageReceived(ConnectedClientInterface $from, $roomId, $message, $timestamp)
     {
         /** save messages to a database, etc... */
+        echo 'Saving message to database' . PHP_EOL;
         $db = DBDriver::getDatabase();
+        echo 'Got database' . PHP_EOL;
         $smt = $db->prepare("
                                   INSERT INTO chat_room_messages(chat_room_id, account_name, chat_message, chat_date)
                                   VALUES (:chat_room_id , :account_name , :message , :chat_date )
                                   ");
+        echo 'Made statements' . PHP_EOL;
 
         if (!$smt) {
             echo "\nPDO::errorInfo():\n";
@@ -58,6 +61,7 @@ class BasicMultiRoomServer extends AbstractMultiRoomServer
             'message' => $message,
             'chat_date' => $timestamp
         ]);
+        echo 'Executed' . PHP_EOL;
 
         echo $result . PHP_EOL;
         print_r($db->errorInfo());
