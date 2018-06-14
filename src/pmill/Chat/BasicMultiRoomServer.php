@@ -61,6 +61,7 @@ class BasicMultiRoomServer extends AbstractMultiRoomServer
             'message' => $message,
             'chat_date' => $timestamp
         ]);
+        echo 'Timestamp: ' . $timestamp . PHP_EOL;
         echo 'Executed' . PHP_EOL;
 
         echo $result . PHP_EOL;
