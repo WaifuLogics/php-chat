@@ -3,10 +3,12 @@
 let isTyping = false;
 let messageField;
 let messageList;
+let typingList;
 
 document.addEventListener("DOMContentLoaded", () => {
     messageField = document.getElementsByName("message")[0];
     messageList = document.getElementById("messageList");
+    typingList = document.getElementById("typingList");
 });
 
 function displayChatMessage(from, message, timestamp) {
@@ -87,7 +89,7 @@ function displayUserTypingMessage(from) {
         const messageTextNode = document.createTextNode(from.name + ' is typing...');
         node.appendChild(messageTextNode);
 
-        messageList.appendChild(node);
+        typingList.appendChild(node);
     }
 }
 
